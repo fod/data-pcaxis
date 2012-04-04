@@ -1,0 +1,63 @@
+=pod
+
+=head1 NAME
+
+Data::PcAxis - A simple interface to the Pc-Axis file format
+
+=head1 VERSION
+
+version 0.0.1
+
+=head1 SYNOPSIS
+
+    use Data::PcAxis;
+
+    my $px = Data::PcAxis->new('path/to/pcaxis/file');
+
+    my @metadata  = $px->metadata;
+    my @keywords  = $px->keywords;
+    my $value     = $px->keyword($keyword);
+
+    my @vars      = $px->variables;
+    my $num_vars  = $px->variables;
+    my $var_name  = $px->var_by_idx($idx);
+    my $index     = $px->var_by_rx($regex);
+    my @indices   = TODO
+
+    my $val_names = $px->vals_by_idx($var_idx);
+    my $val_codes = $px->codes_by_idx($var_idx);
+
+    my $val_names = $px->vals_by_name($var_name);
+    my $val_codes = $px->codes_by_name($var_name);
+
+    my $counts    = $px->val_counts;
+
+    my $val_name  = $px->val_by_code($var_name, $val_code);
+    my $val_code  = $px->code_by_val($var_name, $val_name);
+
+    my $datum     = $px->datapoint(@indices);
+    my $dataset   = $px->dataset(['*', $idx_1, $idx_2, $idx_n]);
+
+=head1 DESCRIPTION
+
+Data::PcAxis is a module for extracting data (and metadata) from PC-Axis files.
+
+PC-Axis is a file format format used for dissemination of statistical information. The format is used by a number of national statistical organisations L< [1]|ref1 > to disseminate national statistics.
+
+=head1 METHODS
+
+=head1 REFERENCES
+
+=item
+
+=head1 AUTHOR
+
+Fiachra O'Donoghue <fod@cpan.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+This software is copyright (c) 2012 by Fiachra O'Donoghue.
+
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
+
