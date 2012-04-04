@@ -338,14 +338,12 @@ __END__
 
 Data::PcAxis is a module for extracting data (and metadata) from PC-Axis files.
 
-PC-Axis is a file format format used for dissemination of statistical information. The format is used by a number of national statistical organisations L< [1]|ref1 > to disseminate national statistics.
+PC-Axis is a file format format used for dissemination of statistical information. The format is used by a number of national statistical organisations to disseminate national statistics.
 
 =head1 METHODS
 
 
 =head1 REFERENCES
-
-=item
 
 =cut
 
