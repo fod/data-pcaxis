@@ -12,30 +12,42 @@ version 0.0.2
 
     use Data::PcAxis;
 
+    # Constructor
     my $px = Data::PcAxis->new('path/to/pcaxis/file');
 
+    # Basic metadata access
     my $metadata  = $px->metadata;
     my @keywords  = $px->keywords;
     my $value     = $px->keyword($keyword);
 
+    # Accessing variables
     my @vars      = $px->variables;
     my $num_vars  = $px->variables;
     my $var_name  = $px->var_by_idx($idx);
     my $index     = $px->var_by_rx($regex);
     my @indices   = TODO
 
+    # Accessing values and codes for variables...
+    ## ...by index
     my $val_names = $px->vals_by_idx($var_idx);
     my $val_codes = $px->codes_by_idx($var_idx);
 
+    ## ...by name
     my $val_names = $px->vals_by_name($var_name);
     my $val_codes = $px->codes_by_name($var_name);
 
+    ## count number of possible values for each variable
     my $counts    = $px->val_counts;
 
+    ## Accessin codes for values and vice versa
     my $val_name  = $px->val_by_code($var_name, $val_code);
     my $val_code  = $px->code_by_val($var_name, $val_name);
 
+    # Accessing data
+    ## Return a single datum
     my $datum     = $px->datapoint(@indices);
+
+    ## Return a column of data
     my $dataset   = $px->dataset(['*', $idx_1, $idx_2, $idx_n]);
 
 =head1 DESCRIPTION
@@ -54,7 +66,9 @@ Creates a new Data::PcAxis object. Takes the path (relative or absolute) to the 
 
 =head2 metadata
 
-     $px->metadata; // 
+     $px->metadata; //
+
+Returns a hashref containing the PC-Axis file's metadata. Each PC-Axis keyword is represented by a hash key. Where the PC-Axis keyword's value is a string
 
 =head1 REFERENCES
 
