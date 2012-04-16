@@ -79,7 +79,7 @@ sub BUILD {
     # Insert empty array if HEADING is missing from metadata
     if (not exists $self->metadata->{HEADING}) {
 	my $file = $self->pxfile;
-	$self->_metadata->{HEADING} = {TABLE => []};
+	$self->metadata->{HEADING} = {TABLE => []};
     }
 }
 
@@ -87,11 +87,11 @@ sub keyword {
     my $self = shift;
     my $keyword = shift;
 
-    if ( defined $self->_metadata->{$keyword}->{TABLE} ) {
-	return $self->_metadata->{$keyword}->{TABLE};
+    if ( defined $self->metadata->{$keyword}->{TABLE} ) {
+	return $self->metadata->{$keyword}->{TABLE};
     }
     else {
-	return $self->_metadata->{$keyword};
+	return $self->metadata->{$keyword};
     }
 }
 
@@ -334,7 +334,7 @@ __END__
     ## count number of possible values for each variable
     my $counts    = $px->val_counts;
 
-    ## Accessin codes for values and vice versa
+    ## Accessing codes for values and vice versa
     my $val_name  = $px->val_by_code($var_name, $val_code);
     my $val_code  = $px->code_by_val($var_name, $val_name);
 
@@ -361,9 +361,21 @@ Creates a new Data::PcAxis object. Takes the path (relative or absolute) to the 
 
 =head2 metadata
 
-     $px->metadata; //
+     my $hashref = $px->metadata; //
 
-Returns a hashref containing the PC-Axis file's metadata. Each PC-Axis keyword is represented by a hash key. Where the PC-Axis keyword's value is a string
+Returns a hashref containing the PC-Axis file's metadata. Each of the returned hashref's keys is a metadata keyword from the original PC-Axis file, each of its values is a hashref. Where a keyword in the original PC-Axis file had a single string value (meaning that the value applied to the entire dataset --- e.g. the 'TITLE' keyword), then that keyword's hashref contains a single key, 'TABLE', which has a value of the string to which that keyword pointed to in the original PC-Axis file.
+
+=head2 keywords
+
+    my @keywords $px->keywords;
+
+Returns an array containing all of the matadata keywords associated with the PC-Axis datasets currentlt represented by the object.
+
+=head2 keyword
+
+   my $value = $px->keyword('TITLE'); // Returns the value of the 'TITLE' keyword
+
+The keyword method returns the value of the passed keyword. 
 
 =head1 REFERENCES
 
