@@ -6,7 +6,7 @@ Data::PcAxis - A simple interface to the Pc-Axis file format
 
 =head1 VERSION
 
-version 0.0.1
+version 0.0.2
 
 =head1 SYNOPSIS
 
@@ -14,7 +14,7 @@ version 0.0.1
 
     my $px = Data::PcAxis->new('path/to/pcaxis/file');
 
-    my @metadata  = $px->metadata;
+    my $metadata  = $px->metadata;
     my @keywords  = $px->keywords;
     my $value     = $px->keyword($keyword);
 
@@ -45,6 +45,16 @@ Data::PcAxis is a module for extracting data (and metadata) from PC-Axis files.
 PC-Axis is a file format format used for dissemination of statistical information. The format is used by a number of national statistical organisations to disseminate national statistics.
 
 =head1 METHODS
+
+=head2 new
+
+     my $px = Data::PcAxis->new('path/to/pcaxis/file');
+
+Creates a new Data::PcAxis object. Takes the path (relative or absolute) to the PC-Axis file that will be represented by the object.
+
+=head2 metadata
+
+     $px->metadata; // 
 
 =head1 REFERENCES
 

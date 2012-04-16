@@ -27,7 +27,7 @@ has 'pxfile' => (
     coerce => 1,
 );
 
-has '_metadata' => (
+has 'metadata' => (
     is => 'ro',
     traits => ['Hash'],
     isa => 'HashRef',
@@ -36,7 +36,6 @@ has '_metadata' => (
     lazy => 1,
     handles => {
 	keywords => 'keys',
-	metadata => 'kv',
     },
 );
 
@@ -78,7 +77,7 @@ sub BUILD {
     my $self = shift;
 
     # Insert empty array if HEADING is missing from metadata
-    if (not exists $self->_metadata->{HEADING}) {
+    if (not exists $self->metadata->{HEADING}) {
 	my $file = $self->pxfile;
 	$self->_metadata->{HEADING} = {TABLE => []};
     }
@@ -310,7 +309,7 @@ __END__
 
     my $px = Data::PcAxis->new('path/to/pcaxis/file');
 
-    my @metadata  = $px->metadata;
+    my $metadata  = $px->metadata;
     my @keywords  = $px->keywords;
     my $value     = $px->keyword($keyword);
 
@@ -342,6 +341,15 @@ PC-Axis is a file format format used for dissemination of statistical informatio
 
 =head1 METHODS
 
+=head2 new
+
+     my $px = Data::PcAxis->new('path/to/pcaxis/file');
+
+Creates a new Data::PcAxis object. Takes the path (relative or absolute) to the PC-Axis file that will be represented by the object.
+
+=head2 metadata
+
+     $px->metadata; // 
 
 =head1 REFERENCES
 
