@@ -1,6 +1,6 @@
 package Data::PcAxis;
 
-# ABSTRACT: A simple interface to the Pc-Axis file format
+# ABSTRACT: A simple interface to the PC-Axis file format
 
 use Moose;
 use namespace::autoclean;
