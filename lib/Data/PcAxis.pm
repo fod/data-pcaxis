@@ -189,25 +189,25 @@ sub datapoint {
     return $self->_data->[$index];
 }
 
-sub dataset {
+sub datacol {
     my $self = shift;
     my $selection = shift;
 
     my $counts = $self->val_counts;
 
-    my $dataset;
+    my $datacol;
     if ( any { $_ eq '*' } @$selection ) {
 	my $grp_idx = firstidx { $_ eq '*' } @$selection;
 
 	for my $i ( 0 .. (@$counts[$grp_idx] -1 )) {
 	    $selection->[$grp_idx] = $i;
-	    push @$dataset, $self->datapoint($selection);
+	    push @$datacol, $self->datapoint($selection);
 	}
     }
     else {
-	$dataset = $self->datapoint($selection);
+	$datacol = $self->datapoint($selection);
     }
-    return $dataset;
+    return $datacol;
 }
 
 sub _build_metadata {
@@ -375,9 +375,42 @@ Returns an array containing all of the matadata keywords associated with the PC-
 
    my $value = $px->keyword('TITLE'); // Returns the value of the 'TITLE' keyword
 
-The keyword method returns the value of the passed keyword. 
+The keyword method returns the value of the passed keyword. If the keyword holds a value which refers to the entire table (such as the 'TITLE' keyword), then that value is returned as a string. If the keyword passed to the method has different values for each variable (for example, the 'VALUES' and 'CODES' keywords will have a different list of values for each variable), then a hashref pointing to the entire set of values is returned by the method.
+
+=head2 variables
+
+    my $num_vars = $px->variables; // scalar context
+    my @vars = $px->variables; // list context
+
+In a scalar context the variables method returns the number of variables represented in the dataset.
+
+In a list context the method returns an array containing the variable names. The variables in the returned array are ordered as they are in the PC-Axis file; first the 'STUB' variables, followed by the 'HEADING' variables.
+
+=head2 var_by_idx
+
+=head2 var_by_rx
+
+=head2 vals_by_idx
+
+=head2 codes_by_idx
+
+=head2 vals_by_name
+
+=head2 codes_by_name
+
+=head2 val_counts
+
+=head2 val_by_code
+
+=head2 code_by_val
+
+=head2 datapoint
+
+=head2 datacol
 
 =head1 REFERENCES
+
+L<http://www.scb.se/pc-axis>
 
 =cut
 
