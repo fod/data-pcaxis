@@ -116,25 +116,25 @@ In a list context the method returns an array containing the variable names. The
 
     my $var_name = $px->var_by_idx($idx);
 
-Returns the variable name, at the index passed, in an array composed of [ STUB variables, HEADING variables ], that is the array returned by Data::PcAxis->variables;
+Returns the variable name, at the index passed, in an array composed of [ STUB variables, HEADING variables ], that is the array returned by C<Data::PcAxis-\>variables>;
 
 =head2 var_by_rx
 
     my $index = $px->var_by_rx($pattern);
 
-Returns the index in an array composed of [ STUB variables, HEADING variables ], that is the array returned by Data::PcAxis->variables, of the first variable the name of which matches the passed pattern.
+Returns the index in an array composed of [ STUB variables, HEADING variables ], that is the array returned by C<Data::PcAxis-\>variables>, of the first variable the name of which matches the passed pattern.
 
 =head2 vals_by_idx
 
     my $val_names = $px->vals_by_idx($var_idx);
 
-Takes a variable index and returns a reference to an array containing the names of all possible values for the variable represented by that index. The order of the values in the array matches the order in the original file. The order will also match that of arrayrefs returned by C<Data::PcAxis->codes_by_idx>, C<Data::PcAxis->vals_by_name>, and C<Data::PcAxis->codes_by_name>.
+Takes a variable index and returns a reference to an array containing the names of all possible values for the variable represented by that index. The order of the values in the array matches the order in the original file. The order will also match that of arrayrefs returned by C<Data::PcAxis-\>codes_by_idx>, C<Data::PcAxis-\>vals_by_name>, and C<Data::PcAxis-\>codes_by_name>.
 
 =head2 codes_by_idx
 
     my $val_codes = $px->codes_by_idx($var_idx);
 
-Returns a reference to an array containing the codes for all of the possible values of the variable passed. The order of the codes in the array matches the order in the original file. The order will also match that of arrayrefs returned by C<Data::PcAxis->vals_by_idx>, C<Data::PcAxis->vals_by_name>, and C<Data::PcAxis->codes_by_name>.
+Returns a reference to an array containing the codes for all of the possible values of the variable passed. The order of the codes in the array matches the order in the original file. The order will also match that of arrayrefs returned by C<Data::PcAxis-\>vals_by_idx>, C<Data::PcAxis\->vals_by_name>, and C<Data::PcAxis-\>codes_by_name>.
 
 =head2 vals_by_name
 
