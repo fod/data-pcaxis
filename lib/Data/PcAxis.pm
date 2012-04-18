@@ -230,14 +230,11 @@ sub _build_metadata {
 
     close $fh;
 
-    # convert double-semicolons to newlines
-    $meta =~ s/;;/\n/g;
-
     # join broken lines (e.g. TITLE="...Very Long"\n"Title")
     $meta =~ s/""/ /g;
 
     # split metadata string into array
-    my @meta = split '\n', $meta;
+    my @meta = split ';;', $meta;
 
     # initialise Text::CSV objects for parsing options and values
     my $csv_opt = Text::CSV->new({binary=>1}) or die Text::CSV->error_diag();
