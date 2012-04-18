@@ -57,10 +57,12 @@ my $values = {
                          ]
         };
 
-is_deeply( $px->keyword('VALUES'), $values, 'Keyword with HoH returned');
+is_deeply($px->keyword('VALUES'), $values, 'Keyword with HoH returned');
 
 my @variables = ('Region', 'Industry Sector NACE Rev 2', 'Year', 'Statistic');
 is_deeply( [$px->variables], \@variables, 'Variable names (list)' );
+
+is_deeply( [$px->variables], [ @{$px->metadata->{'STUB'}->{'TABLE'}}, @{$px->metadata->{'HEADING'}->{'TABLE'}} ], 'Variables via metadata attribute');
 
 is($px->variables, 4, 'Variable count');
 
@@ -78,6 +80,12 @@ my @regexes = (qr/^.egio.$/, qr/\ssector\s/i, qr/^Y.+r$/, qr/stat.stic/i);
 for my $index ( 0..$#regexes ) {
     is( $px->var_by_rx($regexes[$index]), $index, "Variable name by regex: $index");
 }
+
+my @strings = ('Regi', 'gio', '^.egio.$');
+for my $string (@strings) {
+    is( $px->var_by_rx($string), 0, "Variable name by rx: -> passed a string: $string");
+}
+
 
 
 

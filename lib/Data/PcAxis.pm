@@ -9,7 +9,7 @@ use MooseX::Types::Path::Class;
 
 use 5.010;
 use autodie;
-use List::AllUtils qw/reduce any firstidx/;
+use List::AllUtils qw/reduce any firstidx indexes/;
 use Carp;
 use Text::CSV;
 
@@ -96,7 +96,8 @@ sub keyword {
 }
 
 sub var_by_rx {
-    my ($self, $find) = @_;
+    my $self = shift;
+    my $find = shift;
 
     return my $idx = firstidx { $_ =~ $find } $self->variables;
 }
@@ -343,13 +344,34 @@ __END__
     my $datum     = $px->datapoint(@indices);
 
     ## Return a column of data
-    my $dataset   = $px->dataset(['*', $idx_1, $idx_2, $idx_n]);
+    my $datacol   = $px->datacol(['*', $idx_1, $idx_2, $idx_n]);
+
+    ## Return a matrix of data
+    my $dataset = $px->dataset(['*', '*', $idx_2, $idx_n], 0);
 
 =head1 DESCRIPTION
 
 Data::PcAxis is a module for extracting data (and metadata) from PC-Axis files.
 
 PC-Axis is a file format format used for dissemination of statistical information. The format is used by a number of national statistical organisations to disseminate national statistics.
+
+=head1 TERMINOLOGY
+
+=over
+
+=item *
+
+B<Keyword>
+
+=item *
+
+B<Variable>
+
+=item *
+
+B<Value>
+
+=back
 
 =head1 METHODS
 
@@ -363,13 +385,13 @@ Creates a new Data::PcAxis object. Takes the path (relative or absolute) to the 
 
      my $hashref = $px->metadata; //
 
-Returns a hashref containing the PC-Axis file's metadata. Each of the returned hashref's keys is a metadata keyword from the original PC-Axis file, each of its values is a hashref. Where a keyword in the original PC-Axis file had a single string value (meaning that the value applied to the entire dataset --- e.g. the 'TITLE' keyword), then that keyword's hashref contains a single key, 'TABLE', which has a value of the string to which that keyword pointed to in the original PC-Axis file.
+Returns a hashref containing the PC-Axis file's metadata. Each of the returned hashref's keys is a metadata keyword from the original PC-Axis file, each of its values is a hashref. Where a keyword in the original PC-Axis file had a single string value (meaning that the value applied to the entire dataset --- e.g. the 'TITLE' keyword), then that keyword's hashref contains a single key, 'TABLE', the value of which is the string to which that keyword pointed to in the original PC-Axis file.
 
 =head2 keywords
 
     my @keywords $px->keywords;
 
-Returns an array containing all of the matadata keywords associated with the PC-Axis datasets currentlt represented by the object.
+Returns an array containing all of the metadata keywords associated with the PC-Axis datasets currently represented by the object.
 
 =head2 keyword
 
@@ -388,25 +410,61 @@ In a list context the method returns an array containing the variable names. The
 
 =head2 var_by_idx
 
+    my $var_name = $px->var_by_idx($idx);
+
+Returns the variable name, at the index passed, in an array composed of [ STUB variables, HEADING variables ], that is the array returned by Data::PcAxis->variables;
+
 =head2 var_by_rx
+
+    my $index = $px->var_by_rx($pattern);
+
+Returns the index in an array composed of [ STUB variables, HEADING variables ], that is the array returned by Data::PcAxis->variables, of the first variable the name of which matches the passed pattern.
 
 =head2 vals_by_idx
 
+    my $val_names = $px->vals_by_idx($var_idx);
+
+Takes a variable index and returns a reference to an array containing the names of all possible values for the variable represented by that index. The order of the values in the array matches the order in the original file. The order will also match that of arrayrefs returned by C<Data::PcAxis->codes_by_idx>, C<Data::PcAxis->vals_by_name>, and C<Data::PcAxis->codes_by_name>.
+
 =head2 codes_by_idx
+
+    my $val_codes = $px->codes_by_idx($var_idx);
+
+Returns a reference to an array containing the codes for all of the possible values of the variable passed. The order of the codes in the array matches the order in the original file. The order will also match that of arrayrefs returned by C<Data::PcAxis->vals_by_idx>, C<Data::PcAxis->vals_by_name>, and C<Data::PcAxis->codes_by_name>.
 
 =head2 vals_by_name
 
+    my $val_names = $px->vals_by_name($var_name);
+
+
+
 =head2 codes_by_name
+
+    my $val_codes = $px->codes_by_name($var_name);
 
 =head2 val_counts
 
+    my $counts = $px->val_counts;
+
 =head2 val_by_code
+
+    my $val_name = $px->val_by_code($var_name, $val_code);
 
 =head2 code_by_val
 
+    my $val_code = $px->code_by_val($var_name, $val_name);
+
 =head2 datapoint
 
+    my $datum = $px->datapoint(@indices);
+
 =head2 datacol
+
+    my $datacol = $px->datacol(['*', $idx_1, $idx_2, $idx_n]);
+
+=head2 dataset
+
+    my $dataset = $px->dataset(['*', '*', $idx_2, $idx_n], 0);
 
 =head1 REFERENCES
 
