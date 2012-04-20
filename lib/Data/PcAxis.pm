@@ -78,7 +78,6 @@ sub BUILD {
 
     # Insert empty array if HEADING is missing from metadata
     if (not exists $self->metadata->{HEADING}) {
-	my $file = $self->pxfile;
 	$self->metadata->{HEADING} = {TABLE => []};
     }
 }
@@ -191,6 +190,8 @@ sub datapoint {
 }
 
 sub datacol {
+    # TODO: Only allow one wildcard.
+
     my $self = shift;
     my $selection = shift;
 
@@ -201,6 +202,7 @@ sub datacol {
 	my $grp_idx = firstidx { $_ eq '*' } @$selection;
 
 	for my $i ( 0 .. (@$counts[$grp_idx] -1 )) {
+	    say "i: $i";
 	    $selection->[$grp_idx] = $i;
 	    push @$datacol, $self->datapoint($selection);
 	}
@@ -210,6 +212,8 @@ sub datacol {
     }
     return $datacol;
 }
+
+sub dataset {} # only allow 2 wildcards
 
 sub _build_metadata {
     my $self = shift;
@@ -470,6 +474,7 @@ Returns a reference to an array of B<value> counts. Each element in the array is
 =head2 datacol
 
     my $datacol = $px->datacol(['*', $idx_1, $idx_2, $idx_n]);
+
 
 =head2 dataset
 

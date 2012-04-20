@@ -57,6 +57,9 @@ my $values = {
                          ]
         };
 
+my $val_counts = [3, 20, 2, 8];
+is_deeply($px->val_counts, $val_counts, 'val_counts');
+
 is_deeply($px->keyword('VALUES'), $values, 'Keyword with HoH returned');
 
 my @variables = ('Region', 'Industry Sector NACE Rev 2', 'Year', 'Statistic');
@@ -86,8 +89,11 @@ for my $string (@strings) {
     is( $px->var_by_rx($string), 0, "Variable name by rx: -> passed a string: $string");
 }
 
+my $point = 26;
+is( $px->datapoint([0,0,0,0]), 26, 'single first datapoint');
 
-
+my $col = [26, 47, 73];
+is_deeply( $px->datacol(['*',0,0,0]), $col, 'datacol');
 
 done_testing();
 
