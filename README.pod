@@ -61,7 +61,7 @@ PC-Axis is a file format format used for dissemination of statistical informatio
 
 =head1 TERMINOLOGY
 
-The following terms have specific meanings, as defined here, in this documentation:
+The following terms have the following specific meanings in this document:
 
 =over
 
@@ -69,25 +69,31 @@ The following terms have specific meanings, as defined here, in this documentati
 
 B<Keyword>
 
-This is the top level key of the metadata hash and is equivalent to the PC-Axis I<B<keyword>> defined in the PC-Axis file format specification (see L</REFERENCES>). Keywords are generally CAPITALISED. Examples of keywords would be TITLE, STUB, HEADING, SOURCE, or DATA.
+This is the top level key of the metadata hash and is equivalent to the PC-Axis I<Keyword> defined in the PC-Axis file format specification (see L</REFERENCES>). Keywords are generally CAPITALISED. Examples of keywords would be TITLE, STUB, HEADING, SOURCE, or DATA.
 
 =item *
 
 B<Variable>
 
-A 
+A I<variable> refers to any of the items that appear under the STUB or HEADING keywords in a PC-Axis dataset. Each value in the DATA section of the dataset represents the combination of a specific value for each variable defined in the metadata. Varaiables are often referred to in code by array index. A variable's index is its position in a zero-based array consisting of the concatenation of the dataset's STUBs followed by its HEADINGs.
 
 =item *
 
 B<Value>
 
+A I<value> is any of the possible values for a I<variable>. Each variable has at least one possible value. Values can be refferred to by I<name> or I<code>.
+
 =item *
 
 B<Name>
 
+A I<name> is the name of a specific I<value>. For example, the names for possible values for the variable DAY might be 'Monday, Tuesday, Wednesday... etc.'
+
 =item *
 
 B<Code>
+
+A I<code> is another way to refer to a possible I<value> for a I<variable>. In general, a value's name is for humans to read and its code is for machines. The codes for the DAY example above might be '01, 02, 03... etc' or 'MON, TUE, WED... etc'.
 
 =back
 
