@@ -486,10 +486,10 @@ Returns a reference to an array of B<value> counts. Each element in the array is
 =over
 
 =item *
-L<http://www.scb.se/pc-axis>
+PC-Axis web site (L<http://www.scb.se/pc-axis>)
 
 =item *
-L<http://www.scb.se/Pages/List____314011.aspx>
+PC-Axis file format specification (L<http://www.scb.se/Pages/List____314011.aspx>)
 
 =back
 
