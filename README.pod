@@ -61,13 +61,15 @@ PC-Axis is a file format format used for dissemination of statistical informatio
 
 =head1 TERMINOLOGY
 
+The following terms have specific meanings, as defined here, in this documentation:
+
 =over
 
 =item *
 
 B<Keyword>
 
-This is the PC-Axis KEYWORD specified in the 
+This is the top level key of the metadata hash and is equivalent to the PC-Axis keyword defined in the PC-Axis file format specification (see L</REFERENCES>). Keywords are generally CAPITALISED. Examples of keywords would be TITLE, STUB, HEADING, SOURCE, or DATA.
 
 =item *
 
