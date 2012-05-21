@@ -69,11 +69,13 @@ The following terms have specific meanings, as defined here, in this documentati
 
 B<Keyword>
 
-This is the top level key of the metadata hash and is equivalent to the PC-Axis keyword defined in the PC-Axis file format specification (see L</REFERENCES>). Keywords are generally CAPITALISED. Examples of keywords would be TITLE, STUB, HEADING, SOURCE, or DATA.
+This is the top level key of the metadata hash and is equivalent to the PC-Axis I<B<keyword>> defined in the PC-Axis file format specification (see L</REFERENCES>). Keywords are generally CAPITALISED. Examples of keywords would be TITLE, STUB, HEADING, SOURCE, or DATA.
 
 =item *
 
 B<Variable>
+
+A 
 
 =item *
 
@@ -105,7 +107,7 @@ Returns a hashref containing the PC-Axis file's metadata. Each of the returned h
 
 =head2 keywords
 
-    my @keywords $px->keywords;
+    my @keywords = $px->keywords;
 
 Returns an array containing all of the metadata B<keywords> associated with the PC-Axis datasets currently represented by the object.
 
