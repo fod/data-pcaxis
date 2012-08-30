@@ -392,6 +392,12 @@ B<Code>
 
 A I<code> is another way to refer to a possible I<value> for a I<variable>. In general, a value's name is for humans to read and its code is for machines. The codes for the DAY example above might be '01, 02, 03... etc' or 'MON, TUE, WED... etc'.
 
+=item *
+
+B<Datum>
+
+A _datum_ is a single data value held in the data array of the Data::PcAxis object or the DATA keyword of the PC-Axis file. Each datum is the value associated with a particular combination of variable values. The number of _datum_s (data) in a PC-Axis dataset is equal to the product of the number of possible values for each variable &sum
+
 =back
 
 =head1 METHODS
