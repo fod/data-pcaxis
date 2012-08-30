@@ -75,7 +75,7 @@ This is the top level key of the metadata hash and is equivalent to the PC-Axis 
 
 B<Variable>
 
-A I<variable> refers to any of the items that appear under the STUB or HEADING keywords in a PC-Axis dataset. Each value in the DATA section of the dataset represents the combination of a specific value for each variable defined in the metadata. Varaiables are often referred to in code by array index. A variable's index is its position in a zero-based array consisting of the concatenation of the dataset's STUBs followed by its HEADINGs.
+A I<variable> refers to any of the items that appear under the STUB or HEADING keywords in a PC-Axis dataset. Each value in the DATA section of the dataset represents the combination of a specific value for each variable defined in the metadata. Variables are often referred to in code by array index. A variable's index is its position in a zero-based array consisting of the concatenation of the dataset's STUBs followed by its HEADINGs.
 
 =item *
 
