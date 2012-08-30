@@ -397,7 +397,7 @@ A I<code> is another way to refer to a possible I<value> for a I<variable>. In g
 
 B<Datum>
 
-A I<datum> is a single data value held in the data array of the Data::PcAxis object or the DATA keyword of the PC-Axis file. Each datum is the value associated with a particular combination of variable values. The number of I<datum>s (data) in a PC-Axis dataset is equal to the product of the number of possible values for each variable 'E<0x2211'
+A I<datum> is a single data value held in the data array of the Data::PcAxis object or the DATA keyword of the PC-Axis file. Each datum is the value associated with a particular combination of variable values. The number of I<datum>s (data) in a PC-Axis dataset is equal to the product of the number of possible values for each variable 'E<0x2211>'
 
 =back
 
