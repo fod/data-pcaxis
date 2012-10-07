@@ -121,15 +121,26 @@ sub codes_by_idx {
     my $self = shift;
     my $idx = shift;
 
-    my $var = $self->var_by_idx($idx);;
-    return $self->keyword('CODES')->{$var};
+    my $var = $self->var_by_idx($idx);
+
+    if (not exists $self->keyword('CODES')->{$var}) {
+	return $self->keyword('VALUES')->{$var};
+    }
+    else {
+	return $self->keyword('CODES')->{$var};
+    }
 }
 
 sub codes_by_name {
     my $self = shift;
     my $var = shift;
 
-    return $self->keyword('CODES')->{$var};
+    if (not exists $self->keyword('CODES')->{$var}) {
+	return $self->keyword('VALUES')->{$var};
+    }
+    else {
+	return $self->keyword('CODES')->{$var};
+    }
 }
 
 sub _build_variables {

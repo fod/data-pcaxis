@@ -44,8 +44,13 @@ sub run_tests {
 	my $re = qr/^$chars[0].*$chars[1]$/;
 	like($px->var_by_idx($px->var_by_rx($re)), $re, "Variable by regex: $re---$varname");
 
-	my $numvals = $testData->[$i]->{numVals}[$idx];#say $px->keyword('VALUES')->{Year} || 'xxx';#$px->vals_by_idx($idx);
+	my $numvals = $testData->[$i]->{numVals}[$idx];
 	is(scalar @{$px->vals_by_idx($idx)}, $numvals, "Number of values for variable at index $idx: $numvals");
+	is(scalar @{$px->vals_by_name($varname)}, $numvals, "Number of values for variable $varname: $numvals");
+	is(scalar @{$px->codes_by_idx($idx)}, $numvals, "Number of codes for variable at index $idx: $numvals");
+	is(scalar @{$px->codes_by_name($varname)}, $numvals, "Number of codes for variable $varname: $numvals");
+
+	
     }
 
 
