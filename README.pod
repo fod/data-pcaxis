@@ -8,13 +8,6 @@ Data::PcAxis - A simple interface to the PC-Axis file format
 
 version 0.0.2
 
-=head1 DESCRIPTION
-
-Data::PcAxis is a module for extracting data (and metadata) from PC-Axis files.
-
-PC-Axis is a file format format used for dissemination of statistical information. The format is used by a number of national statistical organisations to disseminate official statistics.
-
-=encoding utf-8
 =head1 SYNOPSIS
 
     use Data::PcAxis;
@@ -60,6 +53,12 @@ PC-Axis is a file format format used for dissemination of statistical informatio
     ## Return a matrix of data
     my $dataset = $px->dataset(['*', '*', $idx_2, $idx_n], 0);
 
+=head1 DESCRIPTION
+
+Data::PcAxis is a module for extracting data (and metadata) from PC-Axis files.
+
+PC-Axis is a file format format used for dissemination of statistical information. The format is used by a number of national statistical organisations to disseminate official statistics.
+
 =head1 TERMINOLOGY
 
 The following terms have the following specific meanings in this document:
@@ -100,7 +99,7 @@ A I<code> is another way to refer to a possible I<value> for a I<variable>. In g
 
 B<Datum>
 
-A I<datum> is a single data value held in the data array of the Data::PcAxis object or the DATA keyword of the PC-Axis file. Each datum is the value associated with a particular combination of variable values. The number of I<datum>s (data) in a PC-Axis dataset is equal to the product of the number of possible values for each variable 'E<0x2211>'
+A I<datum> is a single data value held in the data array of the Data::PcAxis object or the DATA keyword of the PC-Axis file. Each datum is the value associated with a particular combination of variable values. The number of I<datum>s (data) in a PC-Axis dataset is equal to the product of the number of possible values for each variable.
 
 =back
 
