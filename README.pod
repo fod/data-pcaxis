@@ -45,7 +45,7 @@ version 0.0.2
 
     # Accessing data
     ## Return a single datum
-    my $datum     = $px->datapoint(@indices);
+    my $datum     = $px->datum(@indices);
 
     ## Return a column of data
     my $datacol   = $px->datacol(['*', $idx_1, $idx_2, $idx_n]);
@@ -188,9 +188,9 @@ Returns a reference to an array of B<value> counts. Each element in the array is
 
     my $val_code = $px->code_by_val($var_name, $val_name);
 
-=head2 datapoint
+=head2 datum
 
-    my $datum = $px->datapoint(@indices);
+    my $datum = $px->datum(@indices);
 
 =head2 datacol
 

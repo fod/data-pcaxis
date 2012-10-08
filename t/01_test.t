@@ -98,10 +98,10 @@ sub run_tests {
     my $num_data = $testData->[$i]->{numData};
     is(scalar @{$px->data}, $num_data, "Number of data points: $num_data");
 
+    ## Accessing individual datums
     my @first = 0 x $numvars;
     my @mid = map { floor($_ / 2) } @$valcounts;
     my @last = map { $_ - 1 } @$valcounts;
-
     my $first_datum = $testData->[$i]->{firstDatum};
     my $mid_datum = $testData->[$i]->{midDatum};
     my $last_datum = $testData->[$i]->{lastDatum};
