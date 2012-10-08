@@ -531,7 +531,7 @@ For example, consider a dataset containing two variables, each of which has two 
 
     my $datacol = $px->datacol(['*', $idx_1, $idx_2, $idx_n]);
 
-The dataCol method is similar to the datum method except that one of the elements in the passed arrayref is replaced with a '*' character and rather than returning a single datum it returns a reference to an array of data containing a datum for each possible value for the variable represented by the '*'.
+The datacol method is similar to the datum method except that one of the elements in the passed arrayref is replaced with a '*' character and rather than returning a single datum it returns a reference to an array of data containing a datum for each possible value for the variable represented by the '*'.
 
 For example, consider a dataset containing two variables, each of which has two possible values:
 
@@ -544,10 +544,10 @@ For example, consider a dataset containing two variables, each of which has two 
     $px->values('Sex');     # ['Male', 'Female']
     $px->values('Year');    # ['2011', '2012']
 
-    $px->dataCol(['*',0]);  # [Data value for males in 2011, Data value for females in 2011]
-    $px->dataCol(['*',1]);  # [Data value for males in 2012, Data value for females in 2012]
-    $px->dataCol([0,'*']);  # [Data value for males in 2011, Data value for males in 2012]
-    $px->dataCol([1,'*']);  # [Data value for females in 2011, Data value for females in 2012]
+    $px->datacol(['*',0]);  # [Data value for males in 2011, Data value for females in 2011]
+    $px->datacol(['*',1]);  # [Data value for males in 2012, Data value for females in 2012]
+    $px->datacol([0,'*']);  # [Data value for males in 2011, Data value for males in 2012]
+    $px->datacol([1,'*']);  # [Data value for females in 2011, Data value for females in 2012]
 
 =head1 REFERENCES
 
