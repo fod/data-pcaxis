@@ -102,7 +102,7 @@ sub run_tests {
     my $mid_idx = floor($num_data / 2);
     my @datum_arr = 0 x $numvars;
     my $first_datum = $testData->[$i]->{firstDatum};
-    is($px->datum(@datum_arr), $first_datum, "First datum is $first_datum");
+    is($px->datum(\@datum_arr), $first_datum, "First datum is $first_datum");
 
 
 }

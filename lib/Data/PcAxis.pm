@@ -198,7 +198,7 @@ sub datum {
  	$index += $selection->[$n] * (reduce { $a * $b } @$counts[$n+1 .. $#$counts]);
     }
     $index += @$selection[-1];
-    return $self->_data->[$index];
+    return $self->data->[$index];
 }
 
 sub datacol {
