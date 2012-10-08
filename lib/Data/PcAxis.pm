@@ -426,7 +426,7 @@ Creates a new Data::PcAxis object. Takes the path (relative or absolute) to the 
 
 =head2 metadata
 
-     my $hashref = $px->metadata; //
+     my $hashref = $px->metadata;
 
 Returns a hashref containing the PC-Axis file's metadata. Each of the returned hashref's keys is a metadata B<keyword> from the original PC-Axis file, each of its values is a hashref. Where a keyword in the original PC-Axis file has a single string value (meaning that the value applies to the entire dataset --- e.g. the 'TITLE' keyword), then that keyword's hashref contains a single key, 'TABLE', the value of which is the string to which that keyword pointed to in the original PC-Axis file.
 
@@ -438,14 +438,14 @@ Returns an array containing all of the metadata B<keywords> associated with the 
 
 =head2 keyword
 
-   my $value = $px->keyword('TITLE'); // Returns the value of the 'TITLE' keyword
+   my $value = $px->keyword('TITLE'); # Returns the value of the 'TITLE' keyword
 
 The keyword method returns the value of the passed keyword. If the keyword holds a value which refers to the entire table (such as the 'TITLE' keyword), then that value is returned as a string. If the keyword passed to the method has different values for each variable (for example, the 'VALUES' and 'CODES' keywords will have a different list of values for each variable), then a hashref pointing to the entire set of values is returned by the method.
 
 =head2 variables
 
-    my $num_vars = $px->variables; // scalar context
-    my @vars = $px->variables; // list context
+    my $num_vars = $px->variables; # scalar context
+    my @vars = $px->variables;  # list context
 
 In a scalar context the variables method returns the number of variables represented in the dataset.
 
