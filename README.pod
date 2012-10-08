@@ -50,9 +50,6 @@ version 0.0.2
     ## Return a column of data
     my $datacol   = $px->datacol(['*', $idx_1, $idx_2, $idx_n]);
 
-    ## Return a matrix of data
-    my $dataset = $px->dataset(['*', '*', $idx_2, $idx_n], 0);
-
 =head1 DESCRIPTION
 
 Data::PcAxis is a module for extracting data (and metadata) from PC-Axis files.
@@ -127,14 +124,14 @@ Returns an array containing all of the metadata B<keywords> associated with the 
 
    my $value = $px->keyword('TITLE'); // Returns the value of the 'TITLE' keyword
 
-The keyword method returns the value of the passed B<keyword>. If the keyword holds a value which refers to the entire table (such as the 'TITLE' keyword), then that value is returned as a string. If the keyword passed to the method has different B<values> for each B<variable> (for example, the 'VALUES' and 'CODES' keywords will have a different list of values for each variable), then a hashref pointing to the entire set of values is returned by the method.
+The keyword method returns the value of the passed keyword. If the keyword holds a value which refers to the entire table (such as the 'TITLE' keyword), then that value is returned as a string. If the keyword passed to the method has different values for each variable (for example, the 'VALUES' and 'CODES' keywords will have a different list of values for each variable), then a hashref pointing to the entire set of values is returned by the method.
 
 =head2 variables
 
     my $num_vars = $px->variables; // scalar context
     my @vars = $px->variables; // list context
 
-In a scalar context the variables method returns the number of B<variables> represented in the dataset.
+In a scalar context the variables method returns the number of variables represented in the dataset.
 
 In a list context the method returns an array containing the variable names. The variables in the returned array are ordered as they are in the PC-Axis file; first the 'STUB' variables, followed by the 'HEADING' variables.
 
@@ -160,7 +157,7 @@ Takes a B<variable> index and returns a reference to an array containing the B<n
 
     my $val_codes = $px->codes_by_idx($var_idx);
 
-Takes a B<variable> index and returns a reference to an array containing the B<codes> for all of the possible B<values> of the variable represented by that index. The order of the codes in the array matches the order in the original file. The order will also match that of arrayrefs returned by C<Data::PcAxis-E<gt>vals_by_idx>, C<Data::PcAxis-E<gt>vals_by_name>, and C<Data::PcAxis-E<gt>codes_by_name>.
+Takes a variable index and returns a reference to an array containing the codes for all of the possible B<values> of the variable represented by that index. The order of the codes in the array matches the order in the original file. The order will also match that of arrayrefs returned by C<Data::PcAxis-E<gt>vals_by_idx>, C<Data::PcAxis-E<gt>vals_by_name>, and C<Data::PcAxis-E<gt>codes_by_name>.
 
 =head2 vals_by_name
 
@@ -172,33 +169,69 @@ Takes a B<variable> name and returns a reference to an array containing the B<na
 
     my $val_codes = $px->codes_by_name($var_name);
 
-Takes a B<variable> index and returns a reference to an array containing the B<codes> for all of the possible B<values> of that variable. The order of the codes in the array matches the order in the original file. The order will also match that of arrayrefs returned by C<Data::PcAxis-E<gt>vals_by_idx>, C<Data::PcAxis-E<gt>codes_by_idx>, and C<Data::PcAxis-E<gt>vals_by_name>.
+Takes a variable index and returns a reference to an array containing the codes for all of the possible values of that variable. The order of the codes in the array matches the order in the original file. The order will also match that of arrayrefs returned by C<Data::PcAxis-E<gt>vals_by_idx>, C<Data::PcAxis-E<gt>codes_by_idx>, and C<Data::PcAxis-E<gt>vals_by_name>.
 
 =head2 val_counts
 
     my $counts = $px->val_counts;
 
-Returns a reference to an array of B<value> counts. Each element in the array is the number of possible values in the current PC-Axis dataset for the variable with the same index (in C<Data::PcAxis-E<gt>variables>) as the element.
+Returns a reference to an array of value counts. Each element in the array is the number of possible values in the current PC-Axis dataset for the variable with the same index (in C<Data::PcAxis-E<gt>variables>) as the element.
 
 =head2 val_by_code
 
     my $val_name = $px->val_by_code($var_name, $val_code);
 
+Takes a variable name and a value code and returns the value which the passed code represents.
+
 =head2 code_by_val
 
     my $val_code = $px->code_by_val($var_name, $val_name);
+
+Takes a variable name and a value name and returns the code representing the passed value.
 
 =head2 datum
 
     my $datum = $px->datum(@indices);
 
+The datum method takes an arrayref of value indices and returns the data value corresponding to the particular combination of values represented by those indices. The number of elements in the passed arrayref must be equal to the number of variables in the current PC-Axis dataset. Each element must be a positive integer no greater than the number of possible values for the variable it represents.
+
+For example, consider a dataset containing two variables, each of which has two possible values:
+
+    my $px = Data::PcAxis->new('path/to/PC-Axis/file');
+
+    # Two variables
+    $px->variables;    # ['Sex', 'Year']
+
+    # Each variable has two possible values
+    $px->values('Sex');  # ['Male', 'Female']
+    $px->values('Year'); # ['2011', '2012']
+
+    $px->datum([0,0]);  # Data value for males in 2011
+    $px->datum([0,1]);  # Data value for males in 2012
+    $px->datum([1,0]);  # Data value for females in 2011
+    $px->datum([1,1]);  # Data value for females in 2012
+
 =head2 datacol
 
     my $datacol = $px->datacol(['*', $idx_1, $idx_2, $idx_n]);
 
-=head2 dataset
+The dataCol method is similar to the datum method except that one of the elements in the passed arrayref is replaced with a '*' character and rather than returning a single datum it returns a reference to an array of data containing a datum for each possible value for the variable represented by the '*'.
 
-    my $dataset = $px->dataset(['*', '*', $idx_2, $idx_n], 0);
+For example, consider a dataset containing two variables, each of which has two possible values:
+
+    my $px = Data::PcAxis->new('path/to/PC-Axis/file');
+
+    # Two variables
+    $px->variables;       # ['Sex', 'Year']
+
+    # Each variable has two possible values
+    $px->values('Sex');     # ['Male', 'Female']
+    $px->values('Year');    # ['2011', '2012']
+
+    $px->dataCol(['*',0]);  # [Data value for males in 2011, Data value for females in 2011] 
+    $px->dataCol(['*',1]);  # [Data value for males in 2012, Data value for females in 2012]
+    $px->dataCol([0,'*']);  # [Data value for males in 2011, Data value for males in 2012]
+    $px->dataCol([1,'*']);  # [Data value for females in 2011, Data value for females in 2012]
 
 =head1 REFERENCES
 

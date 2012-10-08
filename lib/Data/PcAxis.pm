@@ -35,7 +35,7 @@ has 'metadata' => (
     builder => '_build_metadata',
     lazy => 1,
     handles => {
-	keywords => 'keys',
+        keywords => 'keys',
     },
 );
 
@@ -47,8 +47,8 @@ has '_variables' => (
     builder => '_build_variables',
     lazy => 1,
     handles => {
-	variables => 'elements',
-	var_by_idx => 'get',
+        variables => 'elements',
+        var_by_idx => 'get',
     },
 );
 
@@ -66,10 +66,10 @@ around BUILDARGS => sub {
     my $class = shift;
 
     if ( @_ == 1 && ! ref $_[0] ) {
-	return $class->$orig(pxfile => $_[0]);
+        return $class->$orig(pxfile => $_[0]);
     }
     else {
-	return $class->$orig(@_);
+        return $class->$orig(@_);
     }
 };
 
@@ -79,7 +79,7 @@ sub BUILD {
     # Insert empty array if HEADING is missing from metadata
     # TODO: Add warning if HEAD or STUB (or any mandatory fields??) missing
     if (not exists $self->metadata->{HEADING}) {
-	$self->metadata->{HEADING} = {TABLE => []};
+        $self->metadata->{HEADING} = {TABLE => []};
     }
 }
 
@@ -88,10 +88,10 @@ sub keyword {
     my $keyword = shift;
 
     if ( defined $self->metadata->{$keyword}->{TABLE} ) {
-	return $self->metadata->{$keyword}->{TABLE};
+        return $self->metadata->{$keyword}->{TABLE};
     }
     else {
-	return $self->metadata->{$keyword};
+        return $self->metadata->{$keyword};
     }
 }
 
@@ -124,10 +124,10 @@ sub codes_by_idx {
     my $var = $self->var_by_idx($idx);
 
     if (not exists $self->keyword('CODES')->{$var}) {
-	return $self->keyword('VALUES')->{$var};
+        return $self->keyword('VALUES')->{$var};
     }
     else {
-	return $self->keyword('CODES')->{$var};
+        return $self->keyword('CODES')->{$var};
     }
 }
 
@@ -136,10 +136,10 @@ sub codes_by_name {
     my $var = shift;
 
     if (not exists $self->keyword('CODES')->{$var}) {
-	return $self->keyword('VALUES')->{$var};
+        return $self->keyword('VALUES')->{$var};
     }
     else {
-	return $self->keyword('CODES')->{$var};
+        return $self->keyword('CODES')->{$var};
     }
 }
 
@@ -158,7 +158,7 @@ sub val_counts {
     my @val_counts;
 
     for my $var ($self->variables) {
-	push @val_counts, scalar @{$self->vals_by_name($var)};
+        push @val_counts, scalar @{$self->vals_by_name($var)};
     }
     return \@val_counts;
 }
@@ -195,7 +195,7 @@ sub datum {
 
     my $index;
     for my $n (0..($#$selection - 1)) {
- 	$index += $selection->[$n] * (reduce { $a * $b } @$counts[$n+1 .. $#$counts]);
+        $index += $selection->[$n] * (reduce { $a * $b } @$counts[$n+1 .. $#$counts]);
     }
     $index += @$selection[-1];
 
@@ -215,15 +215,15 @@ sub datacol {
 
     my $datacol;
     if ( any { $_ eq '*' } @$selection ) {
-	my $grp_idx = firstidx { $_ eq '*' } @$selection;
+        my $grp_idx = firstidx { $_ eq '*' } @$selection;
 
-	for my $i ( 0 .. (@$counts[$grp_idx] -1 )) {
-	    $selection->[$grp_idx] = $i;
-	    push @$datacol, $self->datum($selection);
-	}
+        for my $i ( 0 .. (@$counts[$grp_idx] -1 )) {
+            $selection->[$grp_idx] = $i;
+            push @$datacol, $self->datum($selection);
+        }
     }
     else {
-	$datacol = $self->datum($selection);
+        $datacol = $self->datum($selection);
     }
     return $datacol;
 }
@@ -236,13 +236,13 @@ sub _build_metadata {
     # slurp all metadata into one string, removing newlines
     my $meta = '';
     while (my $line = <$fh>) {
-	last if $line =~ /^DATA=/;
-	my $tmp = $meta;
-	$line =~ s/\R//g;
+        last if $line =~ /^DATA=/;
+        my $tmp = $meta;
+        $line =~ s/\R//g;
 
-	# double up end-of-line semicolons to solve problem of semicolons appearing within fields
-	$line =~ s/;$/;;/g;
-	$meta = $tmp . $line;
+        # double up end-of-line semicolons to solve problem of semicolons appearing within fields
+        $line =~ s/;$/;;/g;
+        $meta = $tmp . $line;
     }
 
     close $fh;
@@ -261,32 +261,32 @@ sub _build_metadata {
     my $metadata;
     for my $i (0..$#meta) {
 
-	# Regex grabs key, option (optional value appearing after key in brackets, used
-	# to specify values to which this metadata key refers), and values from each
-	# metadata entry
-	my ($key, $opt, $val) = $meta[$i] =~ /^(?<key>.+?)(?:\((?<opt>.+?)\))?=(?<val>.+)$/;
+        # Regex grabs key, option (optional value appearing after key in brackets, used
+        # to specify values to which this metadata key refers), and values from each
+        # metadata entry
+        my ($key, $opt, $val) = $meta[$i] =~ /^(?<key>.+?)(?:\((?<opt>.+?)\))?=(?<val>.+)$/;
 
-	# if entry has no 'option' value then data is specific to table
-	$opt //= 'TABLE';
+        # if entry has no 'option' value then data is specific to table
+        $opt //= 'TABLE';
 
-	# parse comma separated list of values to array
-	$csv_val->parse($val);
-	my @val_fields = $csv_val->fields();
+        # parse comma separated list of values to array
+        $csv_val->parse($val);
+        my @val_fields = $csv_val->fields();
 
-	# parse comma separated list of options to array
-	$csv_opt->parse($opt);
-	my @opt_fields = $csv_opt->fields();
+        # parse comma separated list of options to array
+        $csv_opt->parse($opt);
+        my @opt_fields = $csv_opt->fields();
 
-	# add array of values to appropriate key->option branch of metadata hash
-	for my $field (@opt_fields) {
-	    if ($key ne 'VALUES') {
-		$metadata->{$key}->{$field} = scalar @val_fields == 1 ? $val_fields[0] : [ @val_fields ];
-	    }
-	    else {
-		# ensure that a single VALUES option still gets assigned to an array
-		$metadata->{$key}->{$field} = [ @val_fields ];
-	    }
-	}
+        # add array of values to appropriate key->option branch of metadata hash
+        for my $field (@opt_fields) {
+            if ($key ne 'VALUES') {
+                $metadata->{$key}->{$field} = scalar @val_fields == 1 ? $val_fields[0] : [ @val_fields ];
+            }
+            else {
+                # ensure that a single VALUES option still gets assigned to an array
+                $metadata->{$key}->{$field} = [ @val_fields ];
+            }
+        }
     }
     return $metadata;
 }
@@ -301,16 +301,16 @@ sub _build_data {
   DATAROW:
     while (my $line = <$fh>) {
 
-	if ($line =~ /^DATA=/) {
-	    $dataflag = 1;
-	    next DATAROW;
-	}
-	next DATAROW unless $dataflag == 1;
+        if ($line =~ /^DATA=/) {
+            $dataflag = 1;
+            next DATAROW;
+        }
+        next DATAROW unless $dataflag == 1;
 
-	chomp $line;
-	$line =~ s/;//;
-	my @row = split /\s+/, $line;
-	push @data, @row;
+        chomp $line;
+        $line =~ s/;//;
+        my @row = split /\s+/, $line;
+        push @data, @row;
 
     }
     return \@data;
