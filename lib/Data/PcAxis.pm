@@ -52,7 +52,7 @@ has '_variables' => (
     },
 );
 
-has '_data' => (
+has 'data' => (
     is => 'ro',
     isa => 'ArrayRef',
     required => 1,

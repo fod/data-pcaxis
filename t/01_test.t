@@ -6,6 +6,7 @@ use warnings;
 use autodie;
 use Test::More;
 use JSON;
+use POSIX 'floor';
 
 BEGIN { use_ok 'Data::PcAxis'; }
 
@@ -21,39 +22,81 @@ my $testData;
 sub run_tests {
     my ($pxfile, $i) = @_;
 
+    # Construction
     my $px = new_ok('Data::PcAxis' => [$pxfile]);
 
+    # Keyword access (title)
     my $title = $testData->[$i]->{title};
     is($px->keyword('TITLE'), $title, 'Title: ' . $title);
 
+    # Basic metadata access
     my $numkeys = $testData->[$i]->{numKeywords};
     is(ref($px->metadata), 'HASH', 'Hashref returned on metadata request');
     is(scalar keys $px->metadata, $numkeys, "Number of metadata keys: $numkeys");
     is(scalar $px->keywords, $numkeys, "Keywords array length: $numkeys");
 
+    # Variable access (All)
     my $numvars = $testData->[$i]->{numVars};
     is(scalar $px->variables, $numvars, "Number of variables: $numvars");
     is($px->variables, @{$testData->[$i]->{varNames}}, 'Variable names array');
 
+    # Value counts
+    my $valcounts = $testData->[$i]->{numVals};
+    is_deeply($px->val_counts, $valcounts, 'Array of value counts for each variable correctly returned');
+
+    # Accessing Values and Codes for particular variables
     for my $idx (0 .. $numvars-1) {
 
+	# Variable access by index
 	my $varname = $testData->[$i]->{varNames}[$idx];
 	is($px->var_by_idx($idx), $varname, "Variable by index: $idx---$varname");
 
+	# Variable access by regex
 	my @chars = (substr($varname, 0, 1), substr($varname, -1, 1));
 	my $re = qr/^$chars[0].*$chars[1]$/;
 	like($px->var_by_idx($px->var_by_rx($re)), $re, "Variable by regex: $re---$varname");
 
+	# Accessing value and code arrays by variable name and index
+	## Check for correct number of elements
 	my $numvals = $testData->[$i]->{numVals}[$idx];
 	is(scalar @{$px->vals_by_idx($idx)}, $numvals, "Number of values for variable at index $idx: $numvals");
 	is(scalar @{$px->vals_by_name($varname)}, $numvals, "Number of values for variable $varname: $numvals");
 	is(scalar @{$px->codes_by_idx($idx)}, $numvals, "Number of codes for variable at index $idx: $numvals");
 	is(scalar @{$px->codes_by_name($varname)}, $numvals, "Number of codes for variable $varname: $numvals");
 
-	
+	## Check array contents (Values by index)
+	my @vals = @{$testData->[$i]->{firstMidLastVals}->[$idx]};
+	is($px->vals_by_idx($idx)->[0], $vals[0], "First value for variable at index $idx: $vals[0]");
+	is($px->vals_by_idx($idx)->[floor($numvals/2)], $vals[1], "Middle value for variable at index $idx: $vals[1]");
+	is($px->vals_by_idx($idx)->[-1], $vals[2], "Last value for variable at index $idx: $vals[2]");
+
+	## Check array contents (Values by name)
+	is($px->vals_by_name($varname)->[0], $vals[0], "First value for variable $varname: $vals[0]");
+	is($px->vals_by_name($varname)->[floor($numvals/2)], $vals[1], "Middle value for variable $varname: $vals[1]");
+	is($px->vals_by_name($varname)->[-1], $vals[2], "Last value for variable $varname: $vals[2]");
+
+	## Check array contents (Codes by index)
+	my @codes = @{$testData->[$i]->{firstMidLastCodes}->[$idx]};
+	is($px->codes_by_idx($idx)->[0], $codes[0], "First code for variable at index $idx: $codes[0]");
+	is($px->codes_by_idx($idx)->[floor($numvals/2)], $codes[1], "Middle code for variable at index $idx: $codes[1]");
+	is($px->codes_by_idx($idx)->[-1], $codes[2], "Last code for variable at index $idx: $codes[2]");
+
+	## Check array contents (Codes by name)
+	is($px->codes_by_name($varname)->[0], $codes[0], "First code for variable $varname: $codes[0]");
+	is($px->codes_by_name($varname)->[floor($numvals/2)], $codes[1], "Middle code for variable $varname: $codes[1]");
+	is($px->codes_by_name($varname)->[-1], $codes[2], "Last code for variable $varname: $codes[2]");
+
+	# Accessing value-by-code and code-by-value
+	for (0..2) {
+	    is($px->val_by_code($varname, $codes[$_]), $vals[$_], "Value $vals[$_] returned for code $codes[$_]");
+	    is($px->code_by_val($varname, $vals[$_]), $codes[$_], "Code $codes[$_] returned for value $vals[$_]");
+	}
     }
 
-
+    # Accessing data
+    ## Count number of data points
+    my $num_data = $testData->[$i]->{numData};
+    is(scalar $px->data, $num_data, "Number of data points: $num_data");
 
 }
 
