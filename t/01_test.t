@@ -105,9 +105,9 @@ sub run_tests {
     my $first_datum = $testData->[$i]->{firstDatum};
     my $mid_datum = $testData->[$i]->{midDatum};
     my $last_datum = $testData->[$i]->{lastDatum};
-    cmp_ok($px->datum(\@first), '==', $first_datum, "First datum is $first_datum");
-    cmp_ok($px->datum(\@mid), '==', $mid_datum, "Middle datum is $mid_datum");
-    cmp_ok($px->datum(\@last), '==', $last_datum, "Last datum is $last_datum");
+    cmp_ok($px->datum(\@first), '~~', $first_datum, "First datum is $first_datum");
+    cmp_ok($px->datum(\@mid), '~~', $mid_datum, "Middle datum is $mid_datum");
+    cmp_ok($px->datum(\@last), '~~', $last_datum, "Last datum is $last_datum");
 
     ## Accessing columns of data
 
@@ -129,13 +129,16 @@ sub run_tests {
 	my $zero_first = $testData->[$i]->{firstMidLastZeroData}->[$var_idx]->[0];
 	my $zero_middle = $testData->[$i]->{firstMidLastZeroData}->[$var_idx]->[1];
 	my $zero_last = $testData->[$i]->{firstMidLastZeroData}->[$var_idx]->[2];
-	cmp_ok($zero_datacol->[0], '==', $zero_first, "First value on zero-based datacol = $zero_first");
+	cmp_ok($zero_datacol->[0], '~~', $zero_first, "First value on zero-based datacol = $zero_first");
 	cmp_ok($zero_datacol->[floor($numvals / 2)], '~~', $zero_middle, "Middle value on zero-based datacol = $zero_middle");
-	cmp_ok($zero_datacol->[-1], '==', $zero_last, "Last value on zero-based datacol = $zero_last");
+	cmp_ok($zero_datacol->[-1], '~~', $zero_last, "Last value on zero-based datacol = $zero_last");
 
 	my $max_first = $testData->[$i]->{firstMidLastMaxData}->[$var_idx]->[0];
 	my $max_middle = $testData->[$i]->{firstMidLastMaxData}->[$var_idx]->[1];
 	my $max_last = $testData->[$i]->{firstMidLastMaxData}->[$var_idx]->[2];
+	cmp_ok($max_datacol->[0], '~~', $max_first, "First value on max-based datacol = $max_first");
+	cmp_ok($max_datacol->[floor($numvals / 2)], '~~', $max_middle, "Middle value on max-based datacol = $max_middle");
+	cmp_ok($max_datacol->[-1], '~~', $max_last, "Last value on max-based datacol = $max_last");
     }
 }
 
@@ -143,99 +146,6 @@ for my $i (0..$#$testData) {
     my $pxfile = 't/testData/' . $testData->[$i]->{filename};
     run_tests($pxfile, $i);
 }
-
-#use Data::Dumper; say Dumper $testData;
-#say scalar keys $testData;
-#my $px = new_ok('Data::PcAxis' => ['t/testdata/AIA36.px']);
-
-# my @keywords = qw(DATABASE LANGUAGE CONTVARIABLE MATRIX CODES CONTENTS INFOFILE UNITS VALUES SHOWDECIMALS HEADING SUBJECT-CODE LAST-UPDATED DECIMALS STUB CHARSET BASEPERIOD AXIS-VERSION CREATION-DATE TIMEVAL SUBJECT-AREA TITLE REFPERIOD DOMAIN SOURCE);
-# is_deeply( [$px->keywords], \@keywords, 'Keywords' );
-
-# my $title = 'Manufacturing Local Units which Export by Region, Industry Sector NACE Rev 2, Year and Statistic';
-# is( $px->keyword('TITLE'), $title, 'String value for keyword' );
-
-# my $values = {
-#           'Year' => [
-#                       '2008',
-#                       '2009'
-#                     ],
-#           'Industry Sector NACE Rev 2' => [
-#                                             'Textiles (13)',
-#                                             'Wearing apparel (14)',
-#                                             'Wood and wood products, except furniture (16)',
-#                                             'Paper and paper products (17)',
-#                                             'Printing and reproduction of recorded media (18)',
-#                                             'Rubber and plastic products (22)',
-#                                             'Other non-metallic mineral products (23)',
-#                                             'Basic metals (24)',
-#                                             'Fabricated metal products, except machinery and equipment (25)',
-#                                             'Computer, electronic and optical products (26)',
-
-#                                             'Electrical equipment (27)',
-#                                             'Machinery and equipment n.e.c. (28)',
-#                                             'Motor vehicles, trailers and semi-trailers (29)',
-#                                             'Repair and installation of machinery and equipment (33)',
-#                                             'Food; chemical and pharmaceutical products (10,20,21)',
-#                                             'Food, chemical, pharmaceutical products, computer and optical products (10,20,21,26)',
-#                                             'Manufacturing industries (10 to 33)',
-#                                             'Beverages; tobacco; coke and refined petroleum products; furniture (11,12,19,31)',
-#                                             'Leather, electrical, motor vehicles, trailers, transport, other manufacturing (15,27,29,30,32)',
-#                                             'Leather; other transport equipment and other manufacturing (15,30,32)'
-#                                           ],
-#           'Region' => [
-#                         'Border, Midland and Western',
-#                         'Southern and Eastern',
-#                         'State'
-#                       ],
-#           'Statistic' => [
-#                            'Manufacturing Local Units (Number)',
-#                            'Persons Engaged in Manufacturing Local Units (Number)',
-#                            'Gross Output in Manufacturing Local Units (Euro Thousand)',
-#                            'Gross Output Exported (Euro Thousand)',
-#                            'Distribution of Output Exported - UK (Euro Thousand)',
-#                            'Distribution of Output Exported - EU Excl UK (Euro Thousand)',
-#                            'Distribution of Output Exported - USA (Euro Thousand)',
-#                            'Distribution of Output Exported - Rest of World (Euro Thousand)'
-#                          ]
-#         };
-
-# my $val_counts = [3, 20, 2, 8];
-# is_deeply($px->val_counts, $val_counts, 'val_counts');
-
-# is_deeply($px->keyword('VALUES'), $values, 'Keyword with HoH returned');
-
-# my @variables = ('Region', 'Industry Sector NACE Rev 2', 'Year', 'Statistic');
-# is_deeply( [$px->variables], \@variables, 'Variable names (list)' );
-
-# is_deeply( [$px->variables], [ @{$px->metadata->{'STUB'}->{'TABLE'}}, @{$px->metadata->{'HEADING'}->{'TABLE'}} ], 'Variables via metadata attribute');
-
-# is($px->variables, 4, 'Variable count');
-
-# for my $index ( 0..3 ) {
-#     is($px->var_by_idx($index), $variables[$index], "Variable name by index: $index");
-# }
-
-# is( $px->var_by_idx(5), undef, 'Bad index returns undef' );
-
-# for my $index ( 0..3 ) {
-#     is($px->var_by_idx($index), $variables[$index], "Variable name by index: $index");
-# }
-
-# my @regexes = (qr/^.egio.$/, qr/\ssector\s/i, qr/^Y.+r$/, qr/stat.stic/i);
-# for my $index ( 0..$#regexes ) {
-#     is( $px->var_by_rx($regexes[$index]), $index, "Variable name by regex: $index");
-# }
-
-# my @strings = ('Regi', 'gio', '^.egio.$');
-# for my $string (@strings) {
-#     is( $px->var_by_rx($string), 0, "Variable name by rx: -> passed a string: $string");
-# }
-
-# my $point = 26;
-# is( $px->datapoint([0,0,0,0]), 26, 'single first datapoint');
-
-# my $col = [26, 47, 73];
-# is_deeply( $px->datacol(['*',0,0,0]), $col, 'datacol');
 
 done_testing();
 
