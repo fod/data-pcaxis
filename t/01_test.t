@@ -6,7 +6,7 @@ use warnings;
 use autodie;
 use Test::More;
 use JSON;
-use POSIX 'floor';
+use POSIX qw'floor ceil';
 
 BEGIN { use_ok 'Data::PcAxis'; }
 
@@ -98,13 +98,16 @@ sub run_tests {
     my $num_data = $testData->[$i]->{numData};
     is(scalar @{$px->data}, $num_data, "Number of data points: $num_data");
 
-    my $last_idx = $num_data - 1;
-    my $mid_idx = floor($num_data / 2);
-    my @datum_arr = 0 x $numvars;
+    my @first = 0 x $numvars;
+    my @mid = map { floor($_ / 2) } @$valcounts;
+    my @last = map { $_ - 1 } @$valcounts;
+
     my $first_datum = $testData->[$i]->{firstDatum};
-    is($px->datum(\@datum_arr), $first_datum, "First datum is $first_datum");
-
-
+    my $mid_datum = $testData->[$i]->{midDatum};
+    my $last_datum = $testData->[$i]->{lastDatum};
+    cmp_ok($px->datum(\@first), '==', $first_datum, "First datum is $first_datum");
+    cmp_ok($px->datum(\@mid), '==', $mid_datum, "Middle datum is $mid_datum");
+    cmp_ok($px->datum(\@last), '==', $last_datum, "Last datum is $last_datum");
 }
 
 for my $i (0..$#$testData) {
