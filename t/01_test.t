@@ -47,50 +47,50 @@ sub run_tests {
     # Accessing Values and Codes for particular variables
     for my $idx (0 .. $numvars-1) {
 
-	# Variable access by index
-	my $varname = $testData->[$i]->{varNames}[$idx];
-	is($px->var_by_idx($idx), $varname, "Variable by index: $idx---$varname");
+        # Variable access by index
+        my $varname = $testData->[$i]->{varNames}[$idx];
+        is($px->var_by_idx($idx), $varname, "Variable by index: $idx---$varname");
 
-	# Variable access by regex
-	my @chars = (substr($varname, 0, 1), substr($varname, -1, 1));
-	my $re = qr/^$chars[0].*$chars[1]$/;
-	like($px->var_by_idx($px->var_by_rx($re)), $re, "Variable by regex: $re---$varname");
+        # Variable access by regex
+        my @chars = (substr($varname, 0, 1), substr($varname, -1, 1));
+        my $re = qr/^$chars[0].*$chars[1]$/;
+        like($px->var_by_idx($px->var_by_rx($re)), $re, "Variable by regex: $re---$varname");
 
-	# Accessing value and code arrays by variable name and index
-	## Check for correct number of elements
-	my $numvals = $testData->[$i]->{numVals}[$idx];
-	is(scalar @{$px->vals_by_idx($idx)}, $numvals, "Number of values for variable at index $idx: $numvals");
-	is(scalar @{$px->vals_by_name($varname)}, $numvals, "Number of values for variable $varname: $numvals");
-	is(scalar @{$px->codes_by_idx($idx)}, $numvals, "Number of codes for variable at index $idx: $numvals");
-	is(scalar @{$px->codes_by_name($varname)}, $numvals, "Number of codes for variable $varname: $numvals");
+        # Accessing value and code arrays by variable name and index
+        ## Check for correct number of elements
+        my $numvals = $testData->[$i]->{numVals}[$idx];
+        is(scalar @{$px->vals_by_idx($idx)}, $numvals, "Number of values for variable at index $idx: $numvals");
+        is(scalar @{$px->vals_by_name($varname)}, $numvals, "Number of values for variable $varname: $numvals");
+        is(scalar @{$px->codes_by_idx($idx)}, $numvals, "Number of codes for variable at index $idx: $numvals");
+        is(scalar @{$px->codes_by_name($varname)}, $numvals, "Number of codes for variable $varname: $numvals");
 
-	## Check array contents (Values by index)
-	my @vals = @{$testData->[$i]->{firstMidLastVals}->[$idx]};
-	is($px->vals_by_idx($idx)->[0], $vals[0], "First value for variable at index $idx: $vals[0]");
-	is($px->vals_by_idx($idx)->[floor($numvals/2)], $vals[1], "Middle value for variable at index $idx: $vals[1]");
-	is($px->vals_by_idx($idx)->[-1], $vals[2], "Last value for variable at index $idx: $vals[2]");
+        ## Check array contents (Values by index)
+        my @vals = @{$testData->[$i]->{firstMidLastVals}->[$idx]};
+        is($px->vals_by_idx($idx)->[0], $vals[0], "First value for variable at index $idx: $vals[0]");
+        is($px->vals_by_idx($idx)->[floor($numvals/2)], $vals[1], "Middle value for variable at index $idx: $vals[1]");
+        is($px->vals_by_idx($idx)->[-1], $vals[2], "Last value for variable at index $idx: $vals[2]");
 
-	## Check array contents (Values by name)
-	is($px->vals_by_name($varname)->[0], $vals[0], "First value for variable $varname: $vals[0]");
-	is($px->vals_by_name($varname)->[floor($numvals/2)], $vals[1], "Middle value for variable $varname: $vals[1]");
-	is($px->vals_by_name($varname)->[-1], $vals[2], "Last value for variable $varname: $vals[2]");
+        ## Check array contents (Values by name)
+        is($px->vals_by_name($varname)->[0], $vals[0], "First value for variable $varname: $vals[0]");
+        is($px->vals_by_name($varname)->[floor($numvals/2)], $vals[1], "Middle value for variable $varname: $vals[1]");
+        is($px->vals_by_name($varname)->[-1], $vals[2], "Last value for variable $varname: $vals[2]");
 
-	## Check array contents (Codes by index)
-	my @codes = @{$testData->[$i]->{firstMidLastCodes}->[$idx]};
-	is($px->codes_by_idx($idx)->[0], $codes[0], "First code for variable at index $idx: $codes[0]");
-	is($px->codes_by_idx($idx)->[floor($numvals/2)], $codes[1], "Middle code for variable at index $idx: $codes[1]");
-	is($px->codes_by_idx($idx)->[-1], $codes[2], "Last code for variable at index $idx: $codes[2]");
+        ## Check array contents (Codes by index)
+        my @codes = @{$testData->[$i]->{firstMidLastCodes}->[$idx]};
+        is($px->codes_by_idx($idx)->[0], $codes[0], "First code for variable at index $idx: $codes[0]");
+        is($px->codes_by_idx($idx)->[floor($numvals/2)], $codes[1], "Middle code for variable at index $idx: $codes[1]");
+        is($px->codes_by_idx($idx)->[-1], $codes[2], "Last code for variable at index $idx: $codes[2]");
 
-	## Check array contents (Codes by name)
-	is($px->codes_by_name($varname)->[0], $codes[0], "First code for variable $varname: $codes[0]");
-	is($px->codes_by_name($varname)->[floor($numvals/2)], $codes[1], "Middle code for variable $varname: $codes[1]");
-	is($px->codes_by_name($varname)->[-1], $codes[2], "Last code for variable $varname: $codes[2]");
+        ## Check array contents (Codes by name)
+        is($px->codes_by_name($varname)->[0], $codes[0], "First code for variable $varname: $codes[0]");
+        is($px->codes_by_name($varname)->[floor($numvals/2)], $codes[1], "Middle code for variable $varname: $codes[1]");
+        is($px->codes_by_name($varname)->[-1], $codes[2], "Last code for variable $varname: $codes[2]");
 
-	# Accessing value-by-code and code-by-value
-	for (0..2) {
-	    is($px->val_by_code($varname, $codes[$_]), $vals[$_], "Value $vals[$_] returned for code $codes[$_]");
-	    is($px->code_by_val($varname, $vals[$_]), $codes[$_], "Code $codes[$_] returned for value $vals[$_]");
-	}
+        # Accessing value-by-code and code-by-value
+        for (0..2) {
+            is($px->val_by_code($varname, $codes[$_]), $vals[$_], "Value $vals[$_] returned for code $codes[$_]");
+            is($px->code_by_val($varname, $vals[$_]), $codes[$_], "Code $codes[$_] returned for value $vals[$_]");
+        }
     }
 
     # Accessing data
@@ -99,7 +99,7 @@ sub run_tests {
     is(scalar @{$px->data}, $num_data, "Number of data points: $num_data");
 
     ## Accessing individual datums
-    my @first = 0 x $numvars;
+    my @first = (0) x $numvars;
     my @mid = map { floor($_ / 2) } @$valcounts;
     my @last = map { $_ - 1 } @$valcounts;
     my $first_datum = $testData->[$i]->{firstDatum};
@@ -108,6 +108,17 @@ sub run_tests {
     cmp_ok($px->datum(\@first), '==', $first_datum, "First datum is $first_datum");
     cmp_ok($px->datum(\@mid), '==', $mid_datum, "Middle datum is $mid_datum");
     cmp_ok($px->datum(\@last), '==', $last_datum, "Last datum is $last_datum");
+
+    ## Accessing columns of data
+
+    for my $var_idx (0..$numvars-1) {
+	my $varname = $testData->[$i]->{varNames}[$var_idx];
+	my @zeroes = (0) x $numvars;
+	splice @zeroes, $var_idx, 1, '*';
+
+	#my $zero_datacol = $px->datacol(\@zeroes);
+	#cmp_ok(scalar @$zero_datacol, '==', $valcounts->[$var_idx], "Number of values for zero-based datacol on variable $varname = $valcounts->[$var_idx]");
+    }
 }
 
 for my $i (0..$#$testData) {

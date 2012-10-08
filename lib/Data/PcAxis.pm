@@ -214,7 +214,6 @@ sub datacol {
 	my $grp_idx = firstidx { $_ eq '*' } @$selection;
 
 	for my $i ( 0 .. (@$counts[$grp_idx] -1 )) {
-	    say "i: $i";
 	    $selection->[$grp_idx] = $i;
 	    push @$datacol, $self->datum($selection);
 	}
@@ -396,7 +395,7 @@ A I<variable> refers to any of the items that appear under the STUB or HEADING k
 
 B<Value>
 
-A I<value> is any of the possible values for a I<variable>. Each variable has at least one possible value. Values can be refferred to by I<name> or I<code>.
+A I<value> is any of the possible values for a I<variable>. Each variable has at least one possible value. Values can be referred to by I<name> or I<code>.
 
 =item *
 
