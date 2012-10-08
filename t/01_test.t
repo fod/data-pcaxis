@@ -96,7 +96,14 @@ sub run_tests {
     # Accessing data
     ## Count number of data points
     my $num_data = $testData->[$i]->{numData};
-    is(scalar $px->data, $num_data, "Number of data points: $num_data");
+    is(scalar @{$px->data}, $num_data, "Number of data points: $num_data");
+
+    my $last_idx = $num_data - 1;
+    my $mid_idx = floor($num_data / 2);
+    my @datum_arr = 0 x $numvars;
+    my $first_datum = $testData->[$i]->{firstDatum};
+    is($px->datum(@datum_arr), $first_datum, "First datum is $first_datum");
+
 
 }
 

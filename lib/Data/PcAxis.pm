@@ -187,7 +187,7 @@ sub code_by_val {
     return $validx == -1 ? $val : $codes->[$validx];
 }
 
-sub datapoint {
+sub datum {
     my $self = shift;
     my $selection = shift;
 
@@ -216,11 +216,11 @@ sub datacol {
 	for my $i ( 0 .. (@$counts[$grp_idx] -1 )) {
 	    say "i: $i";
 	    $selection->[$grp_idx] = $i;
-	    push @$datacol, $self->datapoint($selection);
+	    push @$datacol, $self->datum($selection);
 	}
     }
     else {
-	$datacol = $self->datapoint($selection);
+	$datacol = $self->datum($selection);
     }
     return $datacol;
 }
@@ -360,7 +360,7 @@ __END__
 
     # Accessing data
     ## Return a single datum
-    my $datum     = $px->datapoint(@indices);
+    my $datum     = $px->datum(@indices);
 
     ## Return a column of data
     my $datacol   = $px->datacol(['*', $idx_1, $idx_2, $idx_n]);
@@ -503,9 +503,9 @@ Returns a reference to an array of B<value> counts. Each element in the array is
 
     my $val_code = $px->code_by_val($var_name, $val_name);
 
-=head2 datapoint
+=head2 datum
 
-    my $datum = $px->datapoint(@indices);
+    my $datum = $px->datum(@indices);
 
 =head2 datacol
 
