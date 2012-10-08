@@ -198,7 +198,11 @@ sub datum {
  	$index += $selection->[$n] * (reduce { $a * $b } @$counts[$n+1 .. $#$counts]);
     }
     $index += @$selection[-1];
-    return $self->data->[$index];
+
+    my $res = $self->data->[$index];
+    $res =~ s/^["']|["']$//g; # Strip outer quotes from returned data
+
+    return $res;
 }
 
 sub datacol {

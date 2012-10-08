@@ -113,11 +113,29 @@ sub run_tests {
 
     for my $var_idx (0..$numvars-1) {
 	my $varname = $testData->[$i]->{varNames}[$var_idx];
-	my @zeroes = (0) x $numvars;
-	splice @zeroes, $var_idx, 1, '*';
+	my @zero_based = (0) x $numvars;
+	my @max_based = map { $_ - 1 } @$valcounts;
 
-	#my $zero_datacol = $px->datacol(\@zeroes);
-	#cmp_ok(scalar @$zero_datacol, '==', $valcounts->[$var_idx], "Number of values for zero-based datacol on variable $varname = $valcounts->[$var_idx]");
+	splice @zero_based, $var_idx, 1, '*';
+	splice @max_based, $var_idx, 1, '*';
+	my $zero_datacol = $px->datacol(\@zero_based);
+	my $max_datacol = $px->datacol(\@max_based);
+
+	my $numvals = $valcounts->[$var_idx];
+
+	is(scalar @$zero_datacol, $numvals, "Number of values for zero-based datacol on variable $varname = $valcounts->[$var_idx]");
+	is(scalar @$max_datacol, $numvals, "Number of values for max-based datacol on variable $varname = $valcounts->[$var_idx]");
+
+	my $zero_first = $testData->[$i]->{firstMidLastZeroData}->[$var_idx]->[0];
+	my $zero_middle = $testData->[$i]->{firstMidLastZeroData}->[$var_idx]->[1];
+	my $zero_last = $testData->[$i]->{firstMidLastZeroData}->[$var_idx]->[2];
+	cmp_ok($zero_datacol->[0], '==', $zero_first, "First value on zero-based datacol = $zero_first");
+	cmp_ok($zero_datacol->[floor($numvals / 2)], '~~', $zero_middle, "Middle value on zero-based datacol = $zero_middle");
+	cmp_ok($zero_datacol->[-1], '==', $zero_last, "Last value on zero-based datacol = $zero_last");
+
+	my $max_first = $testData->[$i]->{firstMidLastMaxData}->[$var_idx]->[0];
+	my $max_middle = $testData->[$i]->{firstMidLastMaxData}->[$var_idx]->[1];
+	my $max_last = $testData->[$i]->{firstMidLastMaxData}->[$var_idx]->[2];
     }
 }
 
