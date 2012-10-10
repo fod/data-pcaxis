@@ -32,7 +32,7 @@ sub run_tests {
     # Basic metadata access
     my $numkeys = $testData->[$i]->{numKeywords};
     is(ref($px->metadata), 'HASH', 'Hashref returned on metadata request');
-    is(scalar keys $px->metadata, $numkeys, "Number of metadata keys: $numkeys");
+    is(scalar keys %{$px->metadata}, $numkeys, "Number of metadata keys: $numkeys");
     is(scalar $px->keywords, $numkeys, "Keywords array length: $numkeys");
 
     # Variable access (All)
