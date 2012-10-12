@@ -123,7 +123,7 @@ sub run_tests {
         my $max_datacol = $px->datacol(\@max_based);
 
         my $numvals = $valcounts->[$var_idx];
-	my $mid_idx = floor($numvals / 2);
+        my $mid_idx = floor($numvals / 2);
 
         is(scalar @$zero_datacol, $numvals, "Number of values for zero-based datacol on variable $varname = $valcounts->[$var_idx]");
         is(scalar @$max_datacol, $numvals, "Number of values for max-based datacol on variable $varname = $valcounts->[$var_idx]");
