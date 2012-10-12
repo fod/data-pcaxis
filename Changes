@@ -4,8 +4,8 @@ Revision history for {{$dist->name}}
  [API CHANGE]
 
  [BUG FIXES]
- 
- Minor changes to test suite to improve pass rate on cetain platforms
+
+ Test suite improvements
 
  [ENHANCEMENTS]
 
@@ -14,6 +14,10 @@ Revision history for {{$dist->name}}
  [MINOR]
 
  [REVISION]
+
+0.0.5 2012-10-10T10:05:51Z
+ [BUG FIXES]
+ - Minor changes to test suite to improve pass rate on cetain platforms
 
 0.0.4 2012-10-09T00:38:59Z
 

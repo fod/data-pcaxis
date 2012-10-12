@@ -7,7 +7,7 @@ use namespace::autoclean;
 use Moose::Util::TypeConstraints;
 use MooseX::Types::Path::Class;
 
-use 5.010;
+#use 5.010;
 use autodie;
 use List::AllUtils qw/reduce any firstidx indexes/;
 use Carp;
