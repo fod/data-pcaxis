@@ -308,6 +308,7 @@ sub _build_data {
         next DATAROW unless $dataflag == 1;
 
         chomp $line;
+	$line =~ s/DATA=//;
         $line =~ s/;//;
         my @row = split /\s+/, $line;
         push @data, @row;

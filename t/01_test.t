@@ -4,9 +4,11 @@
 use strict;
 use warnings;
 use autodie;
+use feature 'say';
 use Test::More;
 use JSON;
 use POSIX 'floor';
+use match::smart;
 
 BEGIN { use_ok 'Data::PcAxis'; }
 
@@ -106,9 +108,9 @@ sub run_tests {
     my $mid_datum = $testData->[$i]->{midDatum};
     my $last_datum = $testData->[$i]->{lastDatum};
 
-    cmp_ok($px->datum(\@first), '~~', $first_datum, "First datum is $first_datum");
-    cmp_ok($px->datum(\@mid), '~~', $mid_datum, "Middle datum is $mid_datum");
-    cmp_ok($px->datum(\@last), '~~', $last_datum, "Last datum is $last_datum");
+    cmp_ok($px->datum(\@first), 'eq', $first_datum, "First datum is $first_datum");
+    cmp_ok($px->datum(\@mid), 'eq', $mid_datum, "Middle datum is $mid_datum");
+    cmp_ok($px->datum(\@last), 'eq', $last_datum, "Last datum is $last_datum");
 
     ## Accessing columns of data
 
@@ -131,16 +133,16 @@ sub run_tests {
         my $zero_first = $testData->[$i]->{firstMidLastZeroData}->[$var_idx]->[0];
         my $zero_middle = $testData->[$i]->{firstMidLastZeroData}->[$var_idx]->[1];
         my $zero_last = $testData->[$i]->{firstMidLastZeroData}->[$var_idx]->[2];
-        cmp_ok($zero_datacol->[0], '~~', $zero_first, "First value on zero-based datacol = $zero_first");
-        cmp_ok($zero_datacol->[$mid_idx], '~~', $zero_middle, "Middle value on zero-based datacol = $zero_middle");
-        cmp_ok($zero_datacol->[-1], '~~', $zero_last, "Last value on zero-based datacol = $zero_last");
+        cmp_ok($zero_datacol->[0], 'eq', $zero_first, "First value on zero-based datacol = $zero_first");
+        cmp_ok($zero_datacol->[$mid_idx], 'eq', $zero_middle, "Middle value on zero-based datacol = $zero_middle");
+        cmp_ok($zero_datacol->[-1], 'eq', $zero_last, "Last value on zero-based datacol = $zero_last");
 
         my $max_first = $testData->[$i]->{firstMidLastMaxData}->[$var_idx]->[0];
         my $max_middle = $testData->[$i]->{firstMidLastMaxData}->[$var_idx]->[1];
         my $max_last = $testData->[$i]->{firstMidLastMaxData}->[$var_idx]->[2];
-        cmp_ok($max_datacol->[0], '~~', $max_first, "First value on max-based datacol = $max_first");
-        cmp_ok($max_datacol->[$mid_idx], '~~', $max_middle, "Middle value on max-based datacol = $max_middle");
-        cmp_ok($max_datacol->[-1], '~~', $max_last, "Last value on max-based datacol = $max_last");
+        cmp_ok($max_datacol->[0], 'eq', $max_first, "First value on max-based datacol = $max_first");
+        cmp_ok($max_datacol->[$mid_idx], 'eq', $max_middle, "Middle value on max-based datacol = $max_middle");
+        cmp_ok($max_datacol->[-1], 'eq', $max_last, "Last value on max-based datacol = $max_last");
     }
 }
 
