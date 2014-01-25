@@ -303,7 +303,6 @@ sub _build_data {
 
         if ($line =~ /^DATA=/) {
             $dataflag = 1;
-            next DATAROW;
         }
         next DATAROW unless $dataflag == 1;
 
